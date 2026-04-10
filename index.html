@@ -93,9 +93,7 @@ header.topbar {
   color: var(--ink-soft);
 }
 
-.topbar-date {
-  text-align: right;
-}
+.topbar-date { text-align: right; }
 .topbar-date .big {
   font-family: 'Fraunces', serif;
   font-size: 22px;
@@ -257,6 +255,30 @@ nav.tabs {
   min-height: 0;
 }
 
+/* memo type toggle */
+.memo-type-toggle {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.memo-type-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.memo-type-btn:hover { color: var(--ink-soft); border-color: var(--ink-soft); }
+.memo-type-btn.active.type-memo { background: var(--ink); color: var(--bg-card); border-color: var(--ink); }
+.memo-type-btn.active.type-schedule { background: var(--accent-bright); color: var(--bg-card); border-color: var(--accent-bright); }
+.memo-type-btn.active.type-todo { background: var(--gold); color: var(--bg-card); border-color: var(--gold); }
+
 .memo-compose {
   display: flex;
   gap: 8px;
@@ -310,10 +332,7 @@ nav.tabs {
 }
 .memo-feed::-webkit-scrollbar { width: 6px; }
 .memo-feed::-webkit-scrollbar-track { background: transparent; }
-.memo-feed::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border-radius: 3px;
-}
+.memo-feed::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 
 .memo-item {
   display: grid;
@@ -333,10 +352,10 @@ nav.tabs {
   border-left: 2px solid var(--gold);
   padding-left: 12px;
 }
-.memo-item.is-today .memo-date {
-  color: var(--gold);
-  font-weight: 500;
-}
+.memo-item.is-today .memo-date { color: var(--gold); font-weight: 500; }
+
+.memo-item.is-schedule .memo-date { color: var(--accent-bright); font-weight: 500; }
+.memo-item.is-schedule .memo-text { color: var(--accent-bright); }
 
 .memo-date {
   font-family: 'JetBrains Mono', monospace;
@@ -355,6 +374,37 @@ nav.tabs {
   margin-top: 1px;
 }
 
+.memo-text-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.memo-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--ink-mute);
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 10px;
+  line-height: 1;
+  transition: all 0.15s;
+  color: transparent;
+  user-select: none;
+}
+.memo-checkbox:hover { border-color: var(--gold); }
+.memo-checkbox.checked {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg-card);
+}
+
 .memo-text {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 13px;
@@ -371,6 +421,10 @@ nav.tabs {
   padding: 4px 8px;
   border-radius: 2px;
   cursor: text;
+}
+.memo-text.checked {
+  text-decoration: line-through;
+  opacity: 0.45;
 }
 
 .memo-actions {
@@ -448,10 +502,7 @@ nav.tabs {
   letter-spacing: 0.15em;
 }
 
-.cal-nav {
-  display: flex;
-  gap: 8px;
-}
+.cal-nav { display: flex; gap: 8px; }
 
 .cal-nav button {
   width: 38px;
@@ -520,16 +571,9 @@ nav.tabs {
 .cal-day:nth-child(7n) { border-right: none; }
 .cal-day:hover { background: rgba(30, 58, 95, 0.04); }
 .cal-day.other-month { opacity: 0.3; }
-.cal-day.today {
-  background: rgba(184, 134, 60, 0.08);
-}
-.cal-day.today .cal-day-num {
-  color: var(--gold);
-  font-weight: 800;
-}
-.cal-day.selected {
-  background: rgba(30, 58, 95, 0.08);
-}
+.cal-day.today { background: rgba(184, 134, 60, 0.08); }
+.cal-day.today .cal-day-num { color: var(--gold); font-weight: 800; }
+.cal-day.selected { background: rgba(30, 58, 95, 0.08); }
 .cal-day.selected::before {
   content: '';
   position: absolute;
@@ -607,9 +651,7 @@ nav.tabs {
   margin-bottom: 24px;
 }
 
-.side-section {
-  margin-bottom: 20px;
-}
+.side-section { margin-bottom: 20px; }
 .side-section-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
@@ -636,10 +678,7 @@ nav.tabs {
   border-bottom: 1px solid var(--line-soft);
 }
 .event-item:last-child { border-bottom: none; }
-.event-item-text {
-  flex: 1;
-  color: var(--ink);
-}
+.event-item-text { flex: 1; color: var(--ink); }
 .event-item-del {
   background: none;
   border: none;
@@ -776,9 +815,7 @@ nav.tabs {
   border-bottom: 1px dashed var(--line);
 }
 
-.form-row {
-  margin-bottom: 14px;
-}
+.form-row { margin-bottom: 14px; }
 .form-row label {
   display: block;
   font-family: 'JetBrains Mono', monospace;
@@ -826,14 +863,8 @@ nav.tabs {
   color: var(--ink-mute);
   transition: all 0.15s;
 }
-.type-toggle button.active.expense {
-  background: var(--red);
-  color: var(--bg-card);
-}
-.type-toggle button.active.income {
-  background: var(--green);
-  color: var(--bg-card);
-}
+.type-toggle button.active.expense { background: var(--red); color: var(--bg-card); }
+.type-toggle button.active.income { background: var(--green); color: var(--bg-card); }
 
 .form-submit {
   width: 100%;
@@ -872,10 +903,7 @@ nav.tabs {
   font-weight: 600;
   font-style: italic;
 }
-.ledger-list-header .filter {
-  display: flex;
-  gap: 4px;
-}
+.ledger-list-header .filter { display: flex; gap: 4px; }
 .filter button {
   padding: 6px 12px;
   background: transparent;
@@ -894,10 +922,7 @@ nav.tabs {
   border-color: var(--ink);
 }
 
-.txn-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+.txn-table { width: 100%; border-collapse: collapse; }
 .txn-table th {
   text-align: left;
   padding: 10px 20px;
@@ -949,13 +974,6 @@ nav.tabs {
 }
 .txn-amount.expense { color: var(--red); }
 .txn-amount.income { color: var(--green); }
-.txn-method {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--ink-mute);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
 .txn-del {
   background: none;
   border: none;
@@ -1002,7 +1020,14 @@ nav.tabs {
   grid-template-columns: 80px 1fr auto;
   gap: 16px;
   align-items: center;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 2px;
+  transition: background 0.15s;
 }
+.cat-row:hover { background: rgba(30, 58, 95, 0.04); }
+.cat-row.active { background: rgba(30, 58, 95, 0.08); }
+.cat-row.active .cat-name { color: var(--accent); font-weight: 700; }
 .cat-name {
   font-family: 'Fraunces', serif;
   font-size: 15px;
@@ -1029,23 +1054,27 @@ nav.tabs {
   text-align: right;
 }
 
+.cat-filter-hint {
+  text-align: center;
+  padding: 10px 8px 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.cat-filter-hint:hover { color: var(--red); }
+
 /* ===== EMPTY ===== */
 .empty-big {
   text-align: center;
   padding: 60px 20px;
   color: var(--ink-mute);
 }
-.empty-big .serif {
-  font-size: 48px;
-  font-style: italic;
-  color: var(--line);
-  margin-bottom: 8px;
-}
-.empty-big .mono {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-}
+.empty-big .serif { font-size: 48px; font-style: italic; color: var(--line); margin-bottom: 8px; }
+.empty-big .mono { font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; }
 
 /* ===== BACKUP BAR ===== */
 .backup-bar {
@@ -1073,11 +1102,7 @@ nav.tabs {
   cursor: pointer;
   border-radius: 2px;
 }
-.backup-bar button:hover {
-  background: var(--ink);
-  color: var(--bg-card);
-  border-color: var(--ink);
-}
+.backup-bar button:hover { background: var(--ink); color: var(--bg-card); border-color: var(--ink); }
 
 /* ===== TOAST ===== */
 .toast {
@@ -1121,7 +1146,7 @@ nav.tabs {
   <header class="topbar">
     <div class="brand">
       <div class="brand-logo">mia</div>
-      <div class="brand-sub">personal dashboard<br>v 1.0 · 2026</div>
+      <div class="brand-sub">personal dashboard<br>v 1.1 · 2026</div>
     </div>
     <div class="topbar-right">
       <div class="topbar-date">
@@ -1162,8 +1187,13 @@ nav.tabs {
 
       <div class="card memo-card">
         <div class="card-label">메모 · notes</div>
+        <div class="memo-type-toggle" id="home-memo-type">
+          <button class="memo-type-btn active type-memo" data-type="memo">메모</button>
+          <button class="memo-type-btn type-schedule" data-type="schedule">일정</button>
+          <button class="memo-type-btn type-todo" data-type="todo">할일</button>
+        </div>
         <div class="memo-compose">
-          <input type="text" id="memo-input" placeholder="오늘의 메모를 적어두세요... (Enter로 저장)">
+          <input type="text" id="memo-input" placeholder="메모를 적어두세요... (Enter로 저장)">
           <button id="memo-add-btn">ADD</button>
         </div>
         <div class="memo-feed" id="memo-feed"></div>
@@ -1206,8 +1236,13 @@ nav.tabs {
         <div class="side-section">
           <div class="side-section-label">일정 · events</div>
           <ul class="event-list" id="side-events"></ul>
+          <div class="memo-type-toggle" id="cal-memo-type" style="margin-top:12px">
+            <button class="memo-type-btn active type-memo" data-type="memo">메모</button>
+            <button class="memo-type-btn type-schedule" data-type="schedule">일정</button>
+            <button class="memo-type-btn type-todo" data-type="todo">할일</button>
+          </div>
           <div class="event-add">
-            <input type="text" id="event-input" placeholder="새 일정 입력...">
+            <input type="text" id="event-input" placeholder="새 메모 입력...">
             <button id="event-add-btn">ADD</button>
           </div>
         </div>
@@ -1242,7 +1277,7 @@ nav.tabs {
 
     <div class="category-breakdown">
       <div class="breakdown-title">카테고리별 지출</div>
-      <div class="breakdown-sub">by category · this month</div>
+      <div class="breakdown-sub">by category · this month · click to filter</div>
       <div class="cat-rows" id="cat-rows"></div>
     </div>
 
@@ -1263,7 +1298,6 @@ nav.tabs {
               <th>CAT</th>
               <th>CONTENT</th>
               <th style="text-align:right">AMOUNT</th>
-              <th>METHOD</th>
               <th></th>
             </tr>
           </thead>
@@ -1311,15 +1345,6 @@ nav.tabs {
           <input type="number" id="f-amount" placeholder="0">
         </div>
 
-        <div class="form-row">
-          <label>METHOD · 결제수단</label>
-          <select id="f-method">
-            <option>계좌이체</option>
-            <option>카드</option>
-            <option>현금</option>
-          </select>
-        </div>
-
         <button class="form-submit" id="f-submit">입력 · ENTER</button>
       </div>
     </div>
@@ -1345,29 +1370,46 @@ let state = {
   calYear: null,
   calMonth: null,
   filter: 'all',
-  formType: 'expense'
+  formType: 'expense',
+  memoType: 'memo',
+  calMemoType: 'memo',
+  catFilter: null
 };
+
+function migrateEvents(events) {
+  if (!events || typeof events !== 'object') return {};
+  Object.keys(events).forEach(key => {
+    if (Array.isArray(events[key])) {
+      events[key] = events[key].map(entry => {
+        if (typeof entry === 'string') return { text: entry, type: 'memo' };
+        if (!entry.type) entry.type = 'memo';
+        return entry;
+      });
+    }
+  });
+  return events;
+}
 
 function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      // 이전 버전의 state.memo 마이그레이션: 오늘 날짜 events 맨 뒤에 추가
       if (parsed.memo && typeof parsed.memo === 'string' && parsed.memo.trim()) {
         const today = ymd(new Date());
         if (!parsed.events) parsed.events = {};
         if (!parsed.events[today]) parsed.events[today] = [];
-        parsed.events[today].push(parsed.memo.trim());
+        parsed.events[today].push({ text: parsed.memo.trim(), type: 'memo' });
       }
       delete parsed.memo;
+      parsed.events = migrateEvents(parsed.events);
       Object.assign(state, parsed);
     }
   } catch (e) { console.error(e); }
 }
 
 function save() {
-  const { selectedDate, calYear, calMonth, filter, formType, ...persist } = state;
+  const { selectedDate, calYear, calMonth, filter, formType, memoType, calMemoType, catFilter, ...persist } = state;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(persist));
 }
 
@@ -1408,26 +1450,47 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
+/* ===== MEMO TYPE TOGGLES ===== */
+document.querySelectorAll('#home-memo-type .memo-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#home-memo-type .memo-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.memoType = btn.dataset.type;
+    const input = document.getElementById('memo-input');
+    if (state.memoType === 'memo') input.placeholder = '메모를 적어두세요... (Enter로 저장)';
+    else if (state.memoType === 'schedule') input.placeholder = '일정을 적어두세요... (Enter로 저장)';
+    else input.placeholder = '할일을 적어두세요... (Enter로 저장)';
+  });
+});
+
+document.querySelectorAll('#cal-memo-type .memo-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#cal-memo-type .memo-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.calMemoType = btn.dataset.type;
+  });
+});
+
+/* ===== MEMO FEED ===== */
 const MEMO_FEED_LIMIT = 20;
 const WEEKDAY_KR = ['일','월','화','수','목','금','토'];
 
 function getAllMemos() {
-  // state.events를 피드 배열로 평탄화
-  // 각 항목: { date, dow, idx, text, isToday }
   const todayKey = ymd(new Date());
   const list = [];
   Object.keys(state.events).forEach(dateKey => {
     const arr = state.events[dateKey] || [];
-    arr.forEach((text, idx) => {
+    arr.forEach((entry, idx) => {
       list.push({
         date: dateKey,
         idx,
-        text,
+        text: entry.text || '',
+        type: entry.type || 'memo',
+        checked: entry.checked || false,
         isToday: dateKey === todayKey
       });
     });
   });
-  // 최신순: 날짜 내림차순, 같은 날짜 내에서는 나중에 추가된 것이 위로
   list.sort((a, b) => {
     if (a.date !== b.date) return b.date.localeCompare(a.date);
     return b.idx - a.idx;
@@ -1452,13 +1515,28 @@ function renderMemoFeed() {
     const dateObj = new Date(y, mo - 1, d);
     const dow = WEEKDAY_KR[dateObj.getDay()];
     const dateLabel = `${mo}.${pad(d)}`;
+
+    let typeClass = '';
+    if (m.isToday) typeClass += ' is-today';
+    if (m.type === 'schedule') typeClass += ' is-schedule';
+    if (m.type === 'todo') typeClass += ' is-todo';
+
+    const checkboxHtml = m.type === 'todo'
+      ? `<span class="memo-checkbox ${m.checked ? 'checked' : ''}" data-role="memo-check">${m.checked ? '✓' : ''}</span>`
+      : '';
+
+    const textClass = (m.type === 'todo' && m.checked) ? 'memo-text checked' : 'memo-text';
+
     return `
-      <div class="memo-item ${m.isToday ? 'is-today' : ''}" data-date="${m.date}" data-idx="${m.idx}">
+      <div class="memo-item${typeClass}" data-date="${m.date}" data-idx="${m.idx}">
         <div class="memo-date">
           ${dateLabel}
           <span class="memo-dow">${dow}</span>
         </div>
-        <div class="memo-text" data-role="memo-text">${escapeHtml(m.text)}</div>
+        <div class="memo-text-wrap">
+          ${checkboxHtml}
+          <span class="${textClass}" data-role="memo-text">${escapeHtml(m.text)}</span>
+        </div>
         <div class="memo-actions">
           <button class="memo-edit" data-role="memo-edit" title="수정">✎</button>
           <button class="memo-del" data-role="memo-del" title="삭제">×</button>
@@ -1499,14 +1577,15 @@ function renderHome() {
   renderMemoFeed();
 }
 
-// 홈 메모 입력 — 오늘 날짜의 events에 추가
 function addHomeMemo() {
   const input = document.getElementById('memo-input');
   const text = input.value.trim();
   if (!text) return;
   const today = ymd(new Date());
   if (!state.events[today]) state.events[today] = [];
-  state.events[today].push(text);
+  const entry = { text, type: state.memoType };
+  if (state.memoType === 'todo') entry.checked = false;
+  state.events[today].push(entry);
   input.value = '';
   save();
   renderHome();
@@ -1523,13 +1602,23 @@ document.getElementById('memo-input').addEventListener('keydown', e => {
   }
 });
 
-// 피드 내 삭제/수정 (이벤트 위임)
+// 피드 내 클릭 (삭제/수정/체크)
 document.getElementById('memo-feed').addEventListener('click', e => {
   const item = e.target.closest('.memo-item');
   if (!item) return;
   const date = item.dataset.date;
   const idx = parseInt(item.dataset.idx);
   const role = e.target.dataset.role;
+
+  if (role === 'memo-check') {
+    if (!state.events[date] || !state.events[date][idx]) return;
+    state.events[date][idx].checked = !state.events[date][idx].checked;
+    save();
+    renderHome();
+    renderCalendar();
+    renderSidePanel();
+    return;
+  }
 
   if (role === 'memo-del') {
     if (!state.events[date]) return;
@@ -1548,7 +1637,6 @@ document.getElementById('memo-feed').addEventListener('click', e => {
     if (textEl.getAttribute('contenteditable') === 'true') return;
     textEl.setAttribute('contenteditable', 'true');
     textEl.focus();
-    // 커서를 끝으로
     const range = document.createRange();
     range.selectNodeContents(textEl);
     range.collapse(false);
@@ -1556,7 +1644,7 @@ document.getElementById('memo-feed').addEventListener('click', e => {
     sel.removeAllRanges();
     sel.addRange(range);
 
-    const original = state.events[date]?.[idx] ?? '';
+    const original = state.events[date]?.[idx]?.text ?? '';
 
     const finish = (commit) => {
       textEl.removeEventListener('blur', onBlur);
@@ -1567,13 +1655,13 @@ document.getElementById('memo-feed').addEventListener('click', e => {
         return;
       }
       const newText = textEl.textContent.trim();
-      if (!state.events[date]) return;
+      if (!state.events[date] || !state.events[date][idx]) return;
       if (!newText) {
         state.events[date].splice(idx, 1);
         if (state.events[date].length === 0) delete state.events[date];
         toast('삭제했어요');
       } else if (newText !== original) {
-        state.events[date][idx] = newText;
+        state.events[date][idx].text = newText;
         toast('수정했어요');
       }
       save();
@@ -1596,6 +1684,7 @@ document.getElementById('memo-feed').addEventListener('click', e => {
   }
 });
 
+/* ===== CALENDAR ===== */
 function renderCalendar() {
   const y = state.calYear;
   const m = state.calMonth;
@@ -1645,7 +1734,12 @@ function renderCalendar() {
 
     let eventsHtml = '';
     events.slice(0, 2).forEach(ev => {
-      eventsHtml += `<div class="cal-event-dot">${escapeHtml(ev)}</div>`;
+      const text = ev.text || '';
+      const type = ev.type || 'memo';
+      let style = '';
+      if (type === 'schedule') style = 'background:var(--accent-bright)';
+      else if (type === 'todo') style = ev.checked ? 'background:var(--ink-mute)' : 'background:var(--gold)';
+      eventsHtml += `<div class="cal-event-dot" ${style ? `style="${style}"` : ''}>${escapeHtml(text)}</div>`;
     });
     if (events.length > 2) {
       eventsHtml += `<div class="cal-event-dot" style="background:var(--ink-mute)">+${events.length - 2}</div>`;
@@ -1699,17 +1793,46 @@ function renderSidePanel() {
   if (events.length === 0) {
     eventList.innerHTML = '<li class="empty-state">등록된 일정이 없습니다</li>';
   } else {
-    eventList.innerHTML = events.map((ev, i) => `
-      <li class="event-item">
-        <span class="event-item-text">${escapeHtml(ev)}</span>
-        <button class="event-item-del" data-idx="${i}">×</button>
-      </li>
-    `).join('');
+    eventList.innerHTML = events.map((ev, i) => {
+      const text = ev.text || '';
+      const type = ev.type || 'memo';
+      const checked = ev.checked || false;
+
+      let prefix = '';
+      if (type === 'todo') {
+        prefix = `<span class="memo-checkbox ${checked ? 'checked' : ''}" data-role="side-check" data-idx="${i}" style="cursor:pointer;flex-shrink:0">${checked ? '✓' : ''}</span>`;
+      }
+
+      let textStyle = '';
+      if (type === 'todo' && checked) textStyle = 'text-decoration:line-through;opacity:0.45;';
+      if (type === 'schedule') textStyle += 'color:var(--accent-bright);';
+
+      return `
+        <li class="event-item">
+          ${prefix}
+          <span class="event-item-text" ${textStyle ? `style="${textStyle}"` : ''}>${escapeHtml(text)}</span>
+          <button class="event-item-del" data-idx="${i}">×</button>
+        </li>
+      `;
+    }).join('');
+
     eventList.querySelectorAll('.event-item-del').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.dataset.idx);
         state.events[state.selectedDate].splice(idx, 1);
         if (state.events[state.selectedDate].length === 0) delete state.events[state.selectedDate];
+        save();
+        renderSidePanel();
+        renderCalendar();
+        renderHome();
+      });
+    });
+
+    eventList.querySelectorAll('[data-role="side-check"]').forEach(cb => {
+      cb.addEventListener('click', () => {
+        const idx = parseInt(cb.dataset.idx);
+        if (!state.events[state.selectedDate] || !state.events[state.selectedDate][idx]) return;
+        state.events[state.selectedDate][idx].checked = !state.events[state.selectedDate][idx].checked;
         save();
         renderSidePanel();
         renderCalendar();
@@ -1739,8 +1862,11 @@ function renderSidePanel() {
 }
 
 document.getElementById('event-add-btn').addEventListener('click', addEvent);
-document.getElementById('event-input').addEventListener('keypress', e => {
-  if (e.key === 'Enter') addEvent();
+document.getElementById('event-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.isComposing) {
+    e.preventDefault();
+    addEvent();
+  }
 });
 
 function addEvent() {
@@ -1749,7 +1875,9 @@ function addEvent() {
   const text = input.value.trim();
   if (!text) return;
   if (!state.events[state.selectedDate]) state.events[state.selectedDate] = [];
-  state.events[state.selectedDate].push(text);
+  const entry = { text, type: state.calMemoType };
+  if (state.calMemoType === 'todo') entry.checked = false;
+  state.events[state.selectedDate].push(entry);
   input.value = '';
   save();
   renderSidePanel();
@@ -1776,6 +1904,7 @@ document.getElementById('cal-today').addEventListener('click', () => {
   renderSidePanel();
 });
 
+/* ===== LEDGER ===== */
 function renderLedger() {
   const now = new Date();
   const thisMonthPrefix = `${now.getFullYear()}-${pad(now.getMonth()+1)}`;
@@ -1801,8 +1930,9 @@ function renderLedger() {
   catRowsEl.innerHTML = cats.map(c => {
     const amt = catTotals[c];
     const pct = (amt / maxCat) * 100;
+    const isActive = state.catFilter === c;
     return `
-      <div class="cat-row">
+      <div class="cat-row ${isActive ? 'active' : ''}" data-cat="${c}">
         <div class="cat-name">${c}</div>
         <div class="cat-bar-wrap"><div class="cat-bar" style="width:${pct}%"></div></div>
         <div class="cat-amount">${fmt(amt)}원</div>
@@ -1810,12 +1940,29 @@ function renderLedger() {
     `;
   }).join('');
 
+  if (state.catFilter) {
+    catRowsEl.innerHTML += `<div class="cat-filter-hint" id="cat-filter-reset">× ${state.catFilter} 필터 해제</div>`;
+    document.getElementById('cat-filter-reset').addEventListener('click', () => {
+      state.catFilter = null;
+      renderLedger();
+    });
+  }
+
+  catRowsEl.querySelectorAll('.cat-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const cat = row.dataset.cat;
+      state.catFilter = state.catFilter === cat ? null : cat;
+      renderLedger();
+    });
+  });
+
   let filtered = [...state.transactions].sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
   if (state.filter !== 'all') filtered = filtered.filter(t => t.type === state.filter);
+  if (state.catFilter) filtered = filtered.filter(t => t.category === state.catFilter);
 
   const tbody = document.getElementById('txn-tbody');
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-big"><div class="serif">∅</div><div class="mono">no transactions</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-big"><div class="serif">∅</div><div class="mono">no transactions</div></div></td></tr>`;
   } else {
     tbody.innerHTML = filtered.map(t => `
       <tr>
@@ -1823,7 +1970,6 @@ function renderLedger() {
         <td><span class="txn-cat">${t.category}</span></td>
         <td class="txn-content">${escapeHtml(t.content)}</td>
         <td class="txn-amount ${t.type}">${t.type === 'expense' ? '-' : '+'}${fmt(t.amount)}</td>
-        <td class="txn-method">${t.method}</td>
         <td><button class="txn-del" data-id="${t.id}">×</button></td>
       </tr>
     `).join('');
@@ -1863,14 +2009,13 @@ document.getElementById('f-submit').addEventListener('click', () => {
   const category = document.getElementById('f-cat').value;
   const content = document.getElementById('f-content').value.trim();
   const amount = parseFloat(document.getElementById('f-amount').value);
-  const method = document.getElementById('f-method').value;
 
   if (!date) { toast('날짜를 선택하세요'); return; }
   if (!content) { toast('내용을 입력하세요'); return; }
   if (!amount || amount <= 0) { toast('금액을 올바르게 입력하세요'); return; }
 
   state.transactions.push({
-    id: uid(), date, type: state.formType, category, content, amount, method
+    id: uid(), date, type: state.formType, category, content, amount
   });
   save();
 
@@ -1884,12 +2029,13 @@ document.getElementById('f-submit').addEventListener('click', () => {
   toast(`${state.formType === 'expense' ? '지출' : '수익'} 입력 완료`);
 });
 
+/* ===== BACKUP ===== */
 document.getElementById('btn-export').addEventListener('click', () => {
   const data = {
     events: state.events,
     transactions: state.transactions,
     exportedAt: new Date().toISOString(),
-    version: 'mia_v1'
+    version: 'mia_v1.1'
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -1913,13 +2059,12 @@ document.getElementById('import-file').addEventListener('change', e => {
     try {
       const data = JSON.parse(evt.target.result);
       if (!confirm('현재 데이터를 백업 파일로 덮어쓸까요?')) return;
-      state.events = data.events || {};
+      state.events = migrateEvents(data.events || {});
       state.transactions = data.transactions || [];
-      // 구버전 백업 파일의 memo 필드 호환
       if (data.memo && typeof data.memo === 'string' && data.memo.trim()) {
         const today = ymd(new Date());
         if (!state.events[today]) state.events[today] = [];
-        state.events[today].push(data.memo.trim());
+        state.events[today].push({ text: data.memo.trim(), type: 'memo' });
       }
       save();
       renderAll();
