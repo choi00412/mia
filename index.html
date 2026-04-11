@@ -47,66 +47,7 @@ html, body {
 .app {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 32px 40px 80px;
-}
-
-header.topbar {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding-bottom: 20px;
-  margin-bottom: 32px;
-  border-bottom: 1px solid var(--line);
-}
-
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-}
-
-.brand-logo {
-  font-family: 'Fraunces', serif;
-  font-weight: 800;
-  font-size: 56px;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--ink);
-  font-style: italic;
-}
-
-.brand-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: var(--ink-mute);
-  padding-bottom: 8px;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--ink-soft);
-}
-
-.topbar-date { text-align: right; }
-.topbar-date .big {
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-}
-.topbar-date .sub {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--ink-mute);
-  margin-top: 2px;
+  padding: 0 40px 80px;
 }
 
 /* ===== NAV TABS ===== */
@@ -114,6 +55,7 @@ nav.tabs {
   display: flex;
   gap: 4px;
   margin-bottom: 28px;
+  padding-top: 16px;
   border-bottom: 1px solid var(--line-soft);
 }
 
@@ -202,20 +144,7 @@ nav.tabs {
   overflow: hidden;
 }
 
-.hero-card::before {
-  content: 'mia';
-  position: absolute;
-  right: -20px;
-  bottom: -80px;
-  font-family: 'Fraunces', serif;
-  font-weight: 800;
-  font-style: italic;
-  font-size: 280px;
-  color: var(--ink);
-  opacity: 0.025;
-  line-height: 1;
-  pointer-events: none;
-}
+/* hero-card::before (mia watermark) 제거됨 */
 
 .hero-grid {
   display: grid;
@@ -377,10 +306,17 @@ nav.tabs {
 .memo-text-wrap {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
 }
 
+/* ===== TODO 두 칸 체크박스 ===== */
+.todo-checks {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
 .memo-checkbox {
   width: 16px;
   height: 16px;
@@ -391,17 +327,24 @@ nav.tabs {
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  margin-top: 2px;
   font-size: 10px;
   line-height: 1;
   transition: all 0.15s;
   color: transparent;
   user-select: none;
 }
-.memo-checkbox:hover { border-color: var(--gold); }
-.memo-checkbox.checked {
+/* 완료 체크박스 (왼쪽) */
+.memo-checkbox.done-box:hover { border-color: var(--gold); }
+.memo-checkbox.done-box.checked {
   background: var(--gold);
   border-color: var(--gold);
+  color: var(--bg-card);
+}
+/* 못함/안함 체크박스 (오른쪽) */
+.memo-checkbox.skip-box:hover { border-color: var(--ink-mute); }
+.memo-checkbox.skip-box.skipped {
+  background: var(--ink-mute);
+  border-color: var(--ink-mute);
   color: var(--bg-card);
 }
 
@@ -422,9 +365,14 @@ nav.tabs {
   border-radius: 2px;
   cursor: text;
 }
-.memo-text.checked {
+.memo-text.done {
   text-decoration: line-through;
   opacity: 0.45;
+}
+.memo-text.skipped {
+  text-decoration: line-through;
+  color: var(--ink-mute);
+  opacity: 0.6;
 }
 
 .memo-actions {
@@ -729,6 +677,58 @@ nav.tabs {
 }
 
 /* ===== LEDGER ===== */
+/* 월 선택 네비게이션 */
+.ledger-month-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.ledger-month-nav button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  color: var(--ink);
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.ledger-month-nav button:hover {
+  background: var(--accent);
+  color: var(--bg-card);
+  border-color: var(--accent);
+}
+.ledger-month-label {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  min-width: 120px;
+}
+.ledger-month-today {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-mute);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.ledger-month-today:hover {
+  background: var(--ink);
+  color: var(--bg-card);
+  border-color: var(--ink);
+}
+
 .ledger-layout {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -896,6 +896,10 @@ nav.tabs {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  z-index: 1;
 }
 .ledger-list-header h3 {
   font-family: 'Fraunces', serif;
@@ -922,6 +926,15 @@ nav.tabs {
   border-color: var(--ink);
 }
 
+/* 거래 내역 고정 스크롤 박스 */
+.txn-scroll-wrap {
+  max-height: 460px;
+  overflow-y: auto;
+}
+.txn-scroll-wrap::-webkit-scrollbar { width: 6px; }
+.txn-scroll-wrap::-webkit-scrollbar-track { background: transparent; }
+.txn-scroll-wrap::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
 .txn-table { width: 100%; border-collapse: collapse; }
 .txn-table th {
   text-align: left;
@@ -933,7 +946,10 @@ nav.tabs {
   color: var(--ink-mute);
   font-weight: 500;
   border-bottom: 1px solid var(--line-soft);
-  background: rgba(217, 208, 191, 0.15);
+  background: rgba(217, 208, 191, 0.9);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 .txn-table td {
   padding: 14px 20px;
@@ -1125,6 +1141,57 @@ nav.tabs {
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
+/* ===== UNDO TOAST ===== */
+.undo-toast {
+  position: fixed;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px 12px 20px;
+  background: var(--ink);
+  color: var(--bg-card);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  border-radius: 2px;
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  transition: transform 0.3s ease-out;
+  pointer-events: none;
+  opacity: 0;
+}
+.undo-toast.show {
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+  opacity: 1;
+}
+.undo-msg {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.undo-btn {
+  padding: 6px 14px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.undo-btn:hover { background: #c8963c; }
+
 /* scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -1137,25 +1204,13 @@ nav.tabs {
   .hero-grid { grid-template-columns: 1fr; gap: 20px; }
   .ledger-stats { grid-template-columns: repeat(2, 1fr); }
   .cal-month-big { font-size: 56px; }
+  .app { padding: 0 20px 80px; }
 }
 </style>
 </head>
 <body>
 
 <div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-logo">mia</div>
-      <div class="brand-sub">personal dashboard<br>v 1.1 · 2026</div>
-    </div>
-    <div class="topbar-right">
-      <div class="topbar-date">
-        <div class="big" id="today-date">—</div>
-        <div class="sub" id="today-weekday">—</div>
-      </div>
-    </div>
-  </header>
-
   <nav class="tabs">
     <button class="tab active" data-panel="home"><span class="tab-num">01 —</span>HOME</button>
     <button class="tab" data-panel="calendar"><span class="tab-num">02 —</span>CALENDAR</button>
@@ -1256,13 +1311,20 @@ nav.tabs {
   </section>
 
   <section class="panel" id="panel-ledger">
+    <div class="ledger-month-nav">
+      <button id="led-month-prev">‹</button>
+      <div class="ledger-month-label" id="led-month-label">2026. 04</div>
+      <button id="led-month-next">›</button>
+      <button class="ledger-month-today" id="led-month-today">이번달</button>
+    </div>
+
     <div class="ledger-stats">
       <div class="stat-card income">
-        <div class="stat-label">이번달 수익 · income</div>
+        <div class="stat-label">수익 · income</div>
         <div class="stat-value income" id="led-income">0<span class="stat-unit">원</span></div>
       </div>
       <div class="stat-card expense">
-        <div class="stat-label">이번달 지출 · expense</div>
+        <div class="stat-label">지출 · expense</div>
         <div class="stat-value expense" id="led-expense">0<span class="stat-unit">원</span></div>
       </div>
       <div class="stat-card balance">
@@ -1277,7 +1339,7 @@ nav.tabs {
 
     <div class="category-breakdown">
       <div class="breakdown-title">카테고리별 지출</div>
-      <div class="breakdown-sub">by category · this month · click to filter</div>
+      <div class="breakdown-sub">by category · click to filter</div>
       <div class="cat-rows" id="cat-rows"></div>
     </div>
 
@@ -1291,18 +1353,20 @@ nav.tabs {
             <button data-filter="income">INCOME</button>
           </div>
         </div>
-        <table class="txn-table">
-          <thead>
-            <tr>
-              <th>DATE</th>
-              <th>CAT</th>
-              <th>CONTENT</th>
-              <th style="text-align:right">AMOUNT</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="txn-tbody"></tbody>
-        </table>
+        <div class="txn-scroll-wrap">
+          <table class="txn-table">
+            <thead>
+              <tr>
+                <th>DATE</th>
+                <th>CAT</th>
+                <th>CONTENT</th>
+                <th style="text-align:right">AMOUNT</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="txn-tbody"></tbody>
+          </table>
+        </div>
       </div>
 
       <div class="ledger-form">
@@ -1359,6 +1423,10 @@ nav.tabs {
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="undo-toast" id="undo-toast">
+  <span class="undo-msg" id="undo-msg"></span>
+  <button class="undo-btn" id="undo-btn">UNDO</button>
+</div>
 
 <script>
 const STORAGE_KEY = 'mia_data_v1';
@@ -1369,12 +1437,18 @@ let state = {
   selectedDate: null,
   calYear: null,
   calMonth: null,
+  ledgerYear: null,
+  ledgerMonth: null,
   filter: 'all',
   formType: 'expense',
   memoType: 'memo',
   calMemoType: 'memo',
   catFilter: null
 };
+
+// 임시 undo 저장소 (저장 안 함)
+let _undoItem = null;
+let _undoTimer = null;
 
 function migrateEvents(events) {
   if (!events || typeof events !== 'object') return {};
@@ -1409,7 +1483,7 @@ function load() {
 }
 
 function save() {
-  const { selectedDate, calYear, calMonth, filter, formType, memoType, calMemoType, catFilter, ...persist } = state;
+  const { selectedDate, calYear, calMonth, ledgerYear, ledgerMonth, filter, formType, memoType, calMemoType, catFilter, ...persist } = state;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(persist));
 }
 
@@ -1426,19 +1500,30 @@ function toast(msg) {
   setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+function showUndoToast(msg, undoFn) {
+  const ut = document.getElementById('undo-toast');
+  document.getElementById('undo-msg').textContent = '삭제됨 · ' + msg;
+  ut.classList.add('show');
+  clearTimeout(_undoTimer);
+  _undoItem = undoFn;
+  document.getElementById('undo-btn').onclick = () => {
+    if (_undoItem) { _undoItem(); _undoItem = null; }
+    hideUndoToast();
+  };
+  _undoTimer = setTimeout(hideUndoToast, 5000);
+}
+
+function hideUndoToast() {
+  document.getElementById('undo-toast').classList.remove('show');
+  _undoItem = null;
+}
+
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
 function escapeHtml(s) {
   return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
-}
-
-function renderTopDate() {
-  const now = new Date();
-  document.getElementById('today-date').textContent =
-    `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
-  document.getElementById('today-weekday').textContent = weekdayEn[now.getDay()];
 }
 
 document.querySelectorAll('.tab').forEach(tab => {
@@ -1487,6 +1572,7 @@ function getAllMemos() {
         text: entry.text || '',
         type: entry.type || 'memo',
         checked: entry.checked || false,
+        skipped: entry.skipped || false,
         isToday: dateKey === todayKey
       });
     });
@@ -1521,11 +1607,17 @@ function renderMemoFeed() {
     if (m.type === 'schedule') typeClass += ' is-schedule';
     if (m.type === 'todo') typeClass += ' is-todo';
 
+    // 할일: 두 칸 체크박스
     const checkboxHtml = m.type === 'todo'
-      ? `<span class="memo-checkbox ${m.checked ? 'checked' : ''}" data-role="memo-check">${m.checked ? '✓' : ''}</span>`
+      ? `<div class="todo-checks">
+           <span class="memo-checkbox done-box ${m.checked ? 'checked' : ''}" data-role="memo-check" title="완료">✓</span>
+           <span class="memo-checkbox skip-box ${m.skipped ? 'skipped' : ''}" data-role="memo-skip" title="못함/안함">✗</span>
+         </div>`
       : '';
 
-    const textClass = (m.type === 'todo' && m.checked) ? 'memo-text checked' : 'memo-text';
+    let textClass = 'memo-text';
+    if (m.type === 'todo' && m.checked) textClass += ' done';
+    else if (m.type === 'todo' && m.skipped) textClass += ' skipped';
 
     return `
       <div class="memo-item${typeClass}" data-date="${m.date}" data-idx="${m.idx}">
@@ -1584,7 +1676,7 @@ function addHomeMemo() {
   const today = ymd(new Date());
   if (!state.events[today]) state.events[today] = [];
   const entry = { text, type: state.memoType };
-  if (state.memoType === 'todo') entry.checked = false;
+  if (state.memoType === 'todo') { entry.checked = false; entry.skipped = false; }
   state.events[today].push(entry);
   input.value = '';
   save();
@@ -1602,7 +1694,7 @@ document.getElementById('memo-input').addEventListener('keydown', e => {
   }
 });
 
-// 피드 내 클릭 (삭제/수정/체크)
+// 피드 내 클릭 (삭제/수정/체크/스킵)
 document.getElementById('memo-feed').addEventListener('click', e => {
   const item = e.target.closest('.memo-item');
   if (!item) return;
@@ -1613,10 +1705,16 @@ document.getElementById('memo-feed').addEventListener('click', e => {
   if (role === 'memo-check') {
     if (!state.events[date] || !state.events[date][idx]) return;
     state.events[date][idx].checked = !state.events[date][idx].checked;
-    save();
-    renderHome();
-    renderCalendar();
-    renderSidePanel();
+    if (state.events[date][idx].checked) state.events[date][idx].skipped = false;
+    save(); renderHome(); renderCalendar(); renderSidePanel();
+    return;
+  }
+
+  if (role === 'memo-skip') {
+    if (!state.events[date] || !state.events[date][idx]) return;
+    state.events[date][idx].skipped = !state.events[date][idx].skipped;
+    if (state.events[date][idx].skipped) state.events[date][idx].checked = false;
+    save(); renderHome(); renderCalendar(); renderSidePanel();
     return;
   }
 
@@ -1624,10 +1722,7 @@ document.getElementById('memo-feed').addEventListener('click', e => {
     if (!state.events[date]) return;
     state.events[date].splice(idx, 1);
     if (state.events[date].length === 0) delete state.events[date];
-    save();
-    renderHome();
-    renderCalendar();
-    renderSidePanel();
+    save(); renderHome(); renderCalendar(); renderSidePanel();
     toast('삭제했어요');
     return;
   }
@@ -1650,10 +1745,7 @@ document.getElementById('memo-feed').addEventListener('click', e => {
       textEl.removeEventListener('blur', onBlur);
       textEl.removeEventListener('keydown', onKey);
       textEl.setAttribute('contenteditable', 'false');
-      if (!commit) {
-        textEl.textContent = original;
-        return;
-      }
+      if (!commit) { textEl.textContent = original; return; }
       const newText = textEl.textContent.trim();
       if (!state.events[date] || !state.events[date][idx]) return;
       if (!newText) {
@@ -1664,20 +1756,12 @@ document.getElementById('memo-feed').addEventListener('click', e => {
         state.events[date][idx].text = newText;
         toast('수정했어요');
       }
-      save();
-      renderHome();
-      renderCalendar();
-      renderSidePanel();
+      save(); renderHome(); renderCalendar(); renderSidePanel();
     };
     const onBlur = () => finish(true);
     const onKey = (ev) => {
-      if (ev.key === 'Enter' && !ev.isComposing) {
-        ev.preventDefault();
-        textEl.blur();
-      } else if (ev.key === 'Escape') {
-        ev.preventDefault();
-        finish(false);
-      }
+      if (ev.key === 'Enter' && !ev.isComposing) { ev.preventDefault(); textEl.blur(); }
+      else if (ev.key === 'Escape') { ev.preventDefault(); finish(false); }
     };
     textEl.addEventListener('blur', onBlur);
     textEl.addEventListener('keydown', onKey);
@@ -1738,7 +1822,7 @@ function renderCalendar() {
       const type = ev.type || 'memo';
       let style = '';
       if (type === 'schedule') style = 'background:var(--accent-bright)';
-      else if (type === 'todo') style = ev.checked ? 'background:var(--ink-mute)' : 'background:var(--gold)';
+      else if (type === 'todo') style = ev.checked ? 'background:var(--ink-mute)' : ev.skipped ? 'background:var(--ink-mute);opacity:0.5' : 'background:var(--gold)';
       eventsHtml += `<div class="cal-event-dot" ${style ? `style="${style}"` : ''}>${escapeHtml(text)}</div>`;
     });
     if (events.length > 2) {
@@ -1797,14 +1881,20 @@ function renderSidePanel() {
       const text = ev.text || '';
       const type = ev.type || 'memo';
       const checked = ev.checked || false;
+      const skipped = ev.skipped || false;
 
+      // 할일: 두 칸 체크박스
       let prefix = '';
       if (type === 'todo') {
-        prefix = `<span class="memo-checkbox ${checked ? 'checked' : ''}" data-role="side-check" data-idx="${i}" style="cursor:pointer;flex-shrink:0">${checked ? '✓' : ''}</span>`;
+        prefix = `
+          <span class="memo-checkbox done-box ${checked ? 'checked' : ''}" data-role="side-check" data-idx="${i}" title="완료">✓</span>
+          <span class="memo-checkbox skip-box ${skipped ? 'skipped' : ''}" data-role="side-skip" data-idx="${i}" title="못함/안함">✗</span>
+        `;
       }
 
       let textStyle = '';
       if (type === 'todo' && checked) textStyle = 'text-decoration:line-through;opacity:0.45;';
+      else if (type === 'todo' && skipped) textStyle = 'text-decoration:line-through;color:var(--ink-mute);';
       if (type === 'schedule') textStyle += 'color:var(--accent-bright);';
 
       return `
@@ -1816,27 +1906,58 @@ function renderSidePanel() {
       `;
     }).join('');
 
+    // 삭제 (undo 지원)
     eventList.querySelectorAll('.event-item-del').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.dataset.idx);
+        const savedDate = state.selectedDate;
+        const deletedEntry = JSON.parse(JSON.stringify(state.events[savedDate][idx]));
+        const savedIdx = idx;
+
         state.events[state.selectedDate].splice(idx, 1);
         if (state.events[state.selectedDate].length === 0) delete state.events[state.selectedDate];
         save();
         renderSidePanel();
         renderCalendar();
         renderHome();
+
+        // Undo 토스트 표시
+        showUndoToast(deletedEntry.text, () => {
+          if (!state.events[savedDate]) state.events[savedDate] = [];
+          // 가능한 한 원래 위치에 삽입
+          if (savedIdx <= state.events[savedDate].length) {
+            state.events[savedDate].splice(savedIdx, 0, deletedEntry);
+          } else {
+            state.events[savedDate].push(deletedEntry);
+          }
+          save();
+          renderSidePanel();
+          renderCalendar();
+          renderHome();
+          toast('복원했어요');
+        });
       });
     });
 
+    // 완료 체크
     eventList.querySelectorAll('[data-role="side-check"]').forEach(cb => {
       cb.addEventListener('click', () => {
         const idx = parseInt(cb.dataset.idx);
         if (!state.events[state.selectedDate] || !state.events[state.selectedDate][idx]) return;
         state.events[state.selectedDate][idx].checked = !state.events[state.selectedDate][idx].checked;
-        save();
-        renderSidePanel();
-        renderCalendar();
-        renderHome();
+        if (state.events[state.selectedDate][idx].checked) state.events[state.selectedDate][idx].skipped = false;
+        save(); renderSidePanel(); renderCalendar(); renderHome();
+      });
+    });
+
+    // 못함/안함 체크
+    eventList.querySelectorAll('[data-role="side-skip"]').forEach(cb => {
+      cb.addEventListener('click', () => {
+        const idx = parseInt(cb.dataset.idx);
+        if (!state.events[state.selectedDate] || !state.events[state.selectedDate][idx]) return;
+        state.events[state.selectedDate][idx].skipped = !state.events[state.selectedDate][idx].skipped;
+        if (state.events[state.selectedDate][idx].skipped) state.events[state.selectedDate][idx].checked = false;
+        save(); renderSidePanel(); renderCalendar(); renderHome();
       });
     });
   }
@@ -1863,10 +1984,7 @@ function renderSidePanel() {
 
 document.getElementById('event-add-btn').addEventListener('click', addEvent);
 document.getElementById('event-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.isComposing) {
-    e.preventDefault();
-    addEvent();
-  }
+  if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); addEvent(); }
 });
 
 function addEvent() {
@@ -1876,7 +1994,7 @@ function addEvent() {
   if (!text) return;
   if (!state.events[state.selectedDate]) state.events[state.selectedDate] = [];
   const entry = { text, type: state.calMemoType };
-  if (state.calMemoType === 'todo') entry.checked = false;
+  if (state.calMemoType === 'todo') { entry.checked = false; entry.skipped = false; }
   state.events[state.selectedDate].push(entry);
   input.value = '';
   save();
@@ -1905,10 +2023,18 @@ document.getElementById('cal-today').addEventListener('click', () => {
 });
 
 /* ===== LEDGER ===== */
+function getLedgerPrefix() {
+  return `${state.ledgerYear}-${pad(state.ledgerMonth + 1)}`;
+}
+
 function renderLedger() {
-  const now = new Date();
-  const thisMonthPrefix = `${now.getFullYear()}-${pad(now.getMonth()+1)}`;
-  const monthTxns = state.transactions.filter(t => t.date.startsWith(thisMonthPrefix));
+  const prefix = getLedgerPrefix();
+
+  // 월 라벨
+  document.getElementById('led-month-label').textContent =
+    `${state.ledgerYear}. ${pad(state.ledgerMonth + 1)}`;
+
+  const monthTxns = state.transactions.filter(t => t.date.startsWith(prefix));
 
   const income = monthTxns.filter(t => t.type === 'income').reduce((s,t) => s + t.amount, 0);
   const expense = monthTxns.filter(t => t.type === 'expense').reduce((s,t) => s + t.amount, 0);
@@ -1956,7 +2082,9 @@ function renderLedger() {
     });
   });
 
-  let filtered = [...state.transactions].sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  let filtered = [...state.transactions]
+    .filter(t => t.date.startsWith(prefix))
+    .sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
   if (state.filter !== 'all') filtered = filtered.filter(t => t.type === state.filter);
   if (state.catFilter) filtered = filtered.filter(t => t.category === state.catFilter);
 
@@ -1986,6 +2114,27 @@ function renderLedger() {
     });
   }
 }
+
+// 가계부 월 네비게이션
+document.getElementById('led-month-prev').addEventListener('click', () => {
+  state.ledgerMonth--;
+  if (state.ledgerMonth < 0) { state.ledgerMonth = 11; state.ledgerYear--; }
+  state.catFilter = null;
+  renderLedger();
+});
+document.getElementById('led-month-next').addEventListener('click', () => {
+  state.ledgerMonth++;
+  if (state.ledgerMonth > 11) { state.ledgerMonth = 0; state.ledgerYear++; }
+  state.catFilter = null;
+  renderLedger();
+});
+document.getElementById('led-month-today').addEventListener('click', () => {
+  const now = new Date();
+  state.ledgerYear = now.getFullYear();
+  state.ledgerMonth = now.getMonth();
+  state.catFilter = null;
+  renderLedger();
+});
 
 document.querySelectorAll('.type-toggle button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -2035,7 +2184,7 @@ document.getElementById('btn-export').addEventListener('click', () => {
     events: state.events,
     transactions: state.transactions,
     exportedAt: new Date().toISOString(),
-    version: 'mia_v1.1'
+    version: 'mia_v1.2'
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -2090,11 +2239,11 @@ function renderAll() {
   if (state.calYear === null) state.calYear = now.getFullYear();
   if (state.calMonth === null) state.calMonth = now.getMonth();
   if (!state.selectedDate) state.selectedDate = ymd(now);
+  if (state.ledgerYear === null) state.ledgerYear = now.getFullYear();
+  if (state.ledgerMonth === null) state.ledgerMonth = now.getMonth();
 
   document.getElementById('f-date').value = ymd(now);
 
-  renderTopDate();
-  setInterval(renderTopDate, 60000);
   renderAll();
 })();
 </script>
