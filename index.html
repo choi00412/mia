@@ -148,10 +148,120 @@ nav.tabs {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 32px;
   position: relative;
   z-index: 1;
+}
+
+.hero-summary {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.hero-summary-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.hero-summary-num {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.hero-summary-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-mute);
+}
+.hero-summary-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--line);
+}
+
+/* ===== HOME PREVIEW CARD ===== */
+.preview-card {
+  padding: 24px 28px;
+}
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0;
+}
+.preview-col {
+  padding: 0 20px;
+}
+.preview-col:first-child { padding-left: 0; }
+.preview-col:last-child { padding-right: 0; }
+.preview-vline {
+  background: var(--line);
+  align-self: stretch;
+}
+.preview-col-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--ink-mute);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-col-label::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: var(--ink-mute);
+}
+.preview-col-count {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-mute);
+  margin-left: auto;
+}
+.preview-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.preview-item:last-child { border-bottom: none; }
+.preview-item-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-mute);
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+.preview-item-text {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.preview-item-text.schedule { color: var(--accent-bright); }
+.preview-empty {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--ink-mute);
+  padding: 8px 0;
 }
 
 .hero-stat .serif-num {
@@ -681,10 +791,10 @@ nav.tabs {
 .ledger-month-nav {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 20px;
 }
-.ledger-month-nav button {
+#led-month-prev, #led-month-next {
   width: 32px;
   height: 32px;
   border: 1px solid var(--line);
@@ -695,8 +805,11 @@ nav.tabs {
   color: var(--ink);
   transition: all 0.2s;
   border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.ledger-month-nav button:hover {
+#led-month-prev:hover, #led-month-next:hover {
   background: var(--accent);
   color: var(--bg-card);
   border-color: var(--accent);
@@ -708,10 +821,10 @@ nav.tabs {
   font-style: italic;
   color: var(--ink);
   letter-spacing: -0.02em;
-  min-width: 120px;
+  min-width: 110px;
 }
 .ledger-month-today {
-  padding: 4px 10px;
+  padding: 6px 12px;
   background: transparent;
   border: 1px solid var(--line);
   font-family: 'JetBrains Mono', monospace;
@@ -722,6 +835,8 @@ nav.tabs {
   cursor: pointer;
   border-radius: 2px;
   transition: all 0.15s;
+  height: auto;
+  width: auto;
 }
 .ledger-month-today:hover {
   background: var(--ink);
@@ -731,14 +846,14 @@ nav.tabs {
 
 .ledger-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 300px;
   gap: 24px;
   margin-bottom: 24px;
 }
 
 .ledger-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 24px;
 }
@@ -1201,10 +1316,14 @@ nav.tabs {
 /* responsive */
 @media (max-width: 1100px) {
   .home-grid, .cal-layout, .ledger-layout { grid-template-columns: 1fr; }
-  .hero-grid { grid-template-columns: 1fr; gap: 20px; }
-  .ledger-stats { grid-template-columns: repeat(2, 1fr); }
+  .hero-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .ledger-stats { grid-template-columns: repeat(3, 1fr); }
   .cal-month-big { font-size: 56px; }
   .app { padding: 0 20px 80px; }
+}
+@media (max-width: 640px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .ledger-stats { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -1232,10 +1351,25 @@ nav.tabs {
             <div class="mono-label">이번달 수익</div>
             <div class="sub-num" id="home-balance">net: 0원</div>
           </div>
-          <div class="hero-stat">
-            <div class="serif-num" id="home-events">0<span class="stat-unit">건</span></div>
-            <div class="mono-label">이번달 일정</div>
-            <div class="sub-num" id="home-today-events">오늘: 0건</div>
+        </div>
+      </div>
+
+      <div class="card preview-card">
+        <div class="preview-grid">
+          <div class="preview-col">
+            <div class="preview-col-label">
+              남은 할일
+              <span class="preview-col-count" id="home-todo-remain">0</span>
+            </div>
+            <div id="home-todo-list"><div class="preview-empty">할일 없음</div></div>
+          </div>
+          <div class="preview-vline"></div>
+          <div class="preview-col">
+            <div class="preview-col-label">
+              예정된 일정
+              <span class="preview-col-count" id="home-sched-upcoming">0</span>
+            </div>
+            <div id="home-sched-list"><div class="preview-empty">예정된 일정 없음</div></div>
           </div>
         </div>
       </div>
@@ -1330,10 +1464,6 @@ nav.tabs {
       <div class="stat-card balance">
         <div class="stat-label">순액 · balance</div>
         <div class="stat-value" id="led-balance">0<span class="stat-unit">원</span></div>
-      </div>
-      <div class="stat-card count">
-        <div class="stat-label">거래 건수 · count</div>
-        <div class="stat-value" id="led-count">0<span class="stat-unit">건</span></div>
       </div>
     </div>
 
@@ -1657,14 +1787,47 @@ function renderHome() {
   document.getElementById('home-spent-count').textContent = `${expenseCount} transactions`;
   document.getElementById('home-balance').textContent = `net: ${fmt(income - expense)}원`;
 
-  const monthEvents = Object.entries(state.events)
-    .filter(([k, v]) => k.startsWith(thisMonthPrefix) && v && v.length)
-    .reduce((s, [k, v]) => s + v.length, 0);
   const todayKey = ymd(now);
-  const todayEvents = (state.events[todayKey] || []).length;
 
-  document.getElementById('home-events').innerHTML = monthEvents + '<span class="stat-unit">건</span>';
-  document.getElementById('home-today-events').textContent = `오늘: ${todayEvents}건`;
+  // 남은 할일: 날짜 오름차순, 미완료+미스킵
+  const allTodos = Object.entries(state.events)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .flatMap(([date, evs]) => evs.map(e => ({ ...e, date })))
+    .filter(e => e.type === 'todo' && !e.checked && !e.skipped);
+  const nearestTodos = allTodos.slice(0, 2);
+
+  // 예정된 일정: 오늘 이후 날짜 오름차순
+  const allScheds = Object.entries(state.events)
+    .filter(([k]) => k >= todayKey)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .flatMap(([date, evs]) => evs.map(e => ({ ...e, date })))
+    .filter(e => e.type === 'schedule');
+  const nearestScheds = allScheds.slice(0, 2);
+
+  document.getElementById('home-todo-remain').textContent = allTodos.length;
+  document.getElementById('home-sched-upcoming').textContent = allScheds.length;
+
+  const todoListEl = document.getElementById('home-todo-list');
+  todoListEl.innerHTML = nearestTodos.length === 0
+    ? '<div class="preview-empty">모두 완료됐어요</div>'
+    : nearestTodos.map(t => {
+        const [, mo, d] = t.date.split('-');
+        return `<div class="preview-item">
+          <span class="preview-item-date">${mo}.${d}</span>
+          <span class="preview-item-text">${escapeHtml(t.text)}</span>
+        </div>`;
+      }).join('');
+
+  const schedListEl = document.getElementById('home-sched-list');
+  schedListEl.innerHTML = nearestScheds.length === 0
+    ? '<div class="preview-empty">예정된 일정 없음</div>'
+    : nearestScheds.map(s => {
+        const [, mo, d] = s.date.split('-');
+        return `<div class="preview-item">
+          <span class="preview-item-date">${mo}.${d}</span>
+          <span class="preview-item-text schedule">${escapeHtml(s.text)}</span>
+        </div>`;
+      }).join('');
 
   renderMemoFeed();
 }
@@ -2042,7 +2205,6 @@ function renderLedger() {
   document.getElementById('led-income').innerHTML = fmt(income) + '<span class="stat-unit">원</span>';
   document.getElementById('led-expense').innerHTML = fmt(expense) + '<span class="stat-unit">원</span>';
   document.getElementById('led-balance').innerHTML = fmt(income - expense) + '<span class="stat-unit">원</span>';
-  document.getElementById('led-count').innerHTML = monthTxns.length + '<span class="stat-unit">건</span>';
 
   const cats = ['식비', '카페', '교통', '쇼핑', '구독', '생활', '기타'];
   const catTotals = {};
@@ -2103,13 +2265,24 @@ function renderLedger() {
     `).join('');
     tbody.querySelectorAll('.txn-del').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (!confirm('이 거래를 삭제할까요?')) return;
-        state.transactions = state.transactions.filter(t => t.id !== btn.dataset.id);
+        const tid = btn.dataset.id;
+        const deleted = state.transactions.find(t => t.id === tid);
+        if (!deleted) return;
+        state.transactions = state.transactions.filter(t => t.id !== tid);
         save();
         renderLedger();
         renderCalendar();
         renderHome();
         renderSidePanel();
+        showUndoToast(`${deleted.content} (${fmt(deleted.amount)}원)`, () => {
+          state.transactions.push(deleted);
+          save();
+          renderLedger();
+          renderCalendar();
+          renderHome();
+          renderSidePanel();
+          toast('복원했어요');
+        });
       });
     });
   }
