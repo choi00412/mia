@@ -516,18 +516,33 @@ nav.tabs {
   font-size: 14px;
 }
 
-.memo-more {
-  text-align: center;
-  padding-top: 14px;
-  margin-top: 6px;
-  border-top: 1px dashed var(--line);
+/* ===== MEMO FILTER ROW ===== */
+.memo-filter-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.memo-filter-btn {
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid var(--line-soft);
   font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: var(--ink-mute);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
 }
-.memo-more:empty { display: none; border: none; padding: 0; margin: 0; }
+.memo-filter-btn:hover { color: var(--ink-soft); border-color: var(--ink-soft); }
+.memo-filter-btn.active {
+  background: var(--ink);
+  color: var(--bg-card);
+  border-color: var(--ink);
+}
 
 /* ===== CALENDAR ===== */
 .cal-header {
@@ -981,6 +996,31 @@ nav.tabs {
 .type-toggle button.active.expense { background: var(--red); color: var(--bg-card); }
 .type-toggle button.active.income { background: var(--green); color: var(--bg-card); }
 
+/* 카테고리 버튼 그리드 */
+.cat-select-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cat-btn {
+  padding: 8px 14px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.cat-btn:hover { border-color: var(--ink-soft); color: var(--ink); }
+.cat-btn.active {
+  background: var(--ink);
+  color: var(--bg-card);
+  border-color: var(--ink);
+}
+
 .form-submit {
   width: 100%;
   padding: 14px;
@@ -1339,17 +1379,14 @@ nav.tabs {
   <section class="panel active" id="panel-home">
     <div class="home-grid">
       <div class="card hero-card">
-        <div class="card-label">this month · at a glance</div>
         <div class="hero-grid">
           <div class="hero-stat">
             <div class="serif-num" id="home-spent">0<span class="stat-unit">원</span></div>
             <div class="mono-label">이번달 지출</div>
-            <div class="sub-num" id="home-spent-count">— transactions</div>
           </div>
           <div class="hero-stat">
             <div class="serif-num" id="home-income">0<span class="stat-unit">원</span></div>
             <div class="mono-label">이번달 수익</div>
-            <div class="sub-num" id="home-balance">net: 0원</div>
           </div>
         </div>
       </div>
@@ -1375,18 +1412,22 @@ nav.tabs {
       </div>
 
       <div class="card memo-card">
-        <div class="card-label">메모 · notes</div>
         <div class="memo-type-toggle" id="home-memo-type">
           <button class="memo-type-btn active type-memo" data-type="memo">메모</button>
           <button class="memo-type-btn type-schedule" data-type="schedule">일정</button>
           <button class="memo-type-btn type-todo" data-type="todo">할일</button>
         </div>
         <div class="memo-compose">
-          <input type="text" id="memo-input" placeholder="메모를 적어두세요... (Enter로 저장)">
+          <input type="text" id="memo-input" placeholder="">
           <button id="memo-add-btn">ADD</button>
         </div>
+        <div class="memo-filter-row" id="memo-filter-row">
+          <button class="memo-filter-btn active" data-filter="all">전체</button>
+          <button class="memo-filter-btn" data-filter="memo">메모</button>
+          <button class="memo-filter-btn" data-filter="schedule">일정</button>
+          <button class="memo-filter-btn" data-filter="todo">할일</button>
+        </div>
         <div class="memo-feed" id="memo-feed"></div>
-        <div class="memo-more" id="memo-more"></div>
       </div>
     </div>
   </section>
@@ -1489,7 +1530,6 @@ nav.tabs {
               <tr>
                 <th>DATE</th>
                 <th>CAT</th>
-                <th>CONTENT</th>
                 <th style="text-align:right">AMOUNT</th>
                 <th></th>
               </tr>
@@ -1518,20 +1558,15 @@ nav.tabs {
 
         <div class="form-row">
           <label>CATEGORY · 카테고리</label>
-          <select id="f-cat">
-            <option>식비</option>
-            <option>카페</option>
-            <option>교통</option>
-            <option>쇼핑</option>
-            <option>구독</option>
-            <option>생활</option>
-            <option>기타</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <label>CONTENT · 내용</label>
-          <input type="text" id="f-content" placeholder="예: 돈까스">
+          <div class="cat-select-grid" id="cat-select-grid">
+            <button type="button" class="cat-btn active" data-cat="식비">식비</button>
+            <button type="button" class="cat-btn" data-cat="카페">카페</button>
+            <button type="button" class="cat-btn" data-cat="교통">교통</button>
+            <button type="button" class="cat-btn" data-cat="쇼핑">쇼핑</button>
+            <button type="button" class="cat-btn" data-cat="구독">구독</button>
+            <button type="button" class="cat-btn" data-cat="생활">생활</button>
+            <button type="button" class="cat-btn" data-cat="기타">기타</button>
+          </div>
         </div>
 
         <div class="form-row">
@@ -1539,7 +1574,7 @@ nav.tabs {
           <input type="number" id="f-amount" placeholder="0">
         </div>
 
-        <button class="form-submit" id="f-submit">입력 · ENTER</button>
+        <button class="form-submit" id="f-submit">입력</button>
       </div>
     </div>
   </section>
@@ -1571,9 +1606,11 @@ let state = {
   ledgerMonth: null,
   filter: 'all',
   formType: 'expense',
+  formCat: '식비',
   memoType: 'memo',
   calMemoType: 'memo',
-  catFilter: null
+  catFilter: null,
+  memoFilter: 'all'
 };
 
 // 임시 undo 저장소 (저장 안 함)
@@ -1613,7 +1650,7 @@ function load() {
 }
 
 function save() {
-  const { selectedDate, calYear, calMonth, ledgerYear, ledgerMonth, filter, formType, memoType, calMemoType, catFilter, ...persist } = state;
+  const { selectedDate, calYear, calMonth, ledgerYear, ledgerMonth, filter, formType, formCat, memoType, calMemoType, catFilter, memoFilter, ...persist } = state;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(persist));
 }
 
@@ -1672,9 +1709,7 @@ document.querySelectorAll('#home-memo-type .memo-type-btn').forEach(btn => {
     btn.classList.add('active');
     state.memoType = btn.dataset.type;
     const input = document.getElementById('memo-input');
-    if (state.memoType === 'memo') input.placeholder = '메모를 적어두세요... (Enter로 저장)';
-    else if (state.memoType === 'schedule') input.placeholder = '일정을 적어두세요... (Enter로 저장)';
-    else input.placeholder = '할일을 적어두세요... (Enter로 저장)';
+    input.placeholder = '';
   });
 });
 
@@ -1683,6 +1718,16 @@ document.querySelectorAll('#cal-memo-type .memo-type-btn').forEach(btn => {
     document.querySelectorAll('#cal-memo-type .memo-type-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     state.calMemoType = btn.dataset.type;
+  });
+});
+
+/* ===== MEMO FILTER ===== */
+document.querySelectorAll('#memo-filter-row .memo-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#memo-filter-row .memo-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.memoFilter = btn.dataset.filter;
+    renderMemoFeed();
   });
 });
 
@@ -1716,12 +1761,15 @@ function getAllMemos() {
 
 function renderMemoFeed() {
   const feed = document.getElementById('memo-feed');
-  const more = document.getElementById('memo-more');
-  const all = getAllMemos();
+  let all = getAllMemos();
+
+  // 필터 적용
+  if (state.memoFilter !== 'all') {
+    all = all.filter(m => m.type === state.memoFilter);
+  }
 
   if (all.length === 0) {
     feed.innerHTML = '<div class="memo-feed-empty">아직 적어둔 메모가 없어요</div>';
-    more.textContent = '';
     return;
   }
 
@@ -1767,11 +1815,6 @@ function renderMemoFeed() {
     `;
   }).join('');
 
-  if (all.length > MEMO_FEED_LIMIT) {
-    more.textContent = `and ${all.length - MEMO_FEED_LIMIT} more — see calendar`;
-  } else {
-    more.textContent = '';
-  }
 }
 
 function renderHome() {
@@ -1784,8 +1827,6 @@ function renderHome() {
 
   document.getElementById('home-spent').innerHTML = fmt(expense) + '<span class="stat-unit">원</span>';
   document.getElementById('home-income').innerHTML = fmt(income) + '<span class="stat-unit">원</span>';
-  document.getElementById('home-spent-count').textContent = `${expenseCount} transactions`;
-  document.getElementById('home-balance').textContent = `net: ${fmt(income - expense)}원`;
 
   const todayKey = ymd(now);
 
@@ -2258,7 +2299,6 @@ function renderLedger() {
       <tr>
         <td class="txn-date">${t.date.slice(5)}</td>
         <td><span class="txn-cat">${t.category}</span></td>
-        <td class="txn-content">${escapeHtml(t.content)}</td>
         <td class="txn-amount ${t.type}">${t.type === 'expense' ? '-' : '+'}${fmt(t.amount)}</td>
         <td><button class="txn-del" data-id="${t.id}">×</button></td>
       </tr>
@@ -2317,6 +2357,14 @@ document.querySelectorAll('.type-toggle button').forEach(btn => {
   });
 });
 
+document.querySelectorAll('#cat-select-grid .cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#cat-select-grid .cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.formCat = btn.dataset.cat;
+  });
+});
+
 document.querySelectorAll('#led-filter button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#led-filter button').forEach(b => b.classList.remove('active'));
@@ -2328,20 +2376,16 @@ document.querySelectorAll('#led-filter button').forEach(btn => {
 
 document.getElementById('f-submit').addEventListener('click', () => {
   const date = document.getElementById('f-date').value;
-  const category = document.getElementById('f-cat').value;
-  const content = document.getElementById('f-content').value.trim();
   const amount = parseFloat(document.getElementById('f-amount').value);
 
   if (!date) { toast('날짜를 선택하세요'); return; }
-  if (!content) { toast('내용을 입력하세요'); return; }
   if (!amount || amount <= 0) { toast('금액을 올바르게 입력하세요'); return; }
 
   state.transactions.push({
-    id: uid(), date, type: state.formType, category, content, amount
+    id: uid(), date, type: state.formType, category: state.formCat, content: state.formCat, amount
   });
   save();
 
-  document.getElementById('f-content').value = '';
   document.getElementById('f-amount').value = '';
 
   renderLedger();
