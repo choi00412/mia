@@ -375,10 +375,10 @@ nav.tabs {
 
 .memo-item {
   display: grid;
-  grid-template-columns: 54px 1fr auto;
-  gap: 14px;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
   align-items: flex-start;
-  padding: 12px 10px;
+  padding: 8px 10px;
   border-bottom: 1px solid var(--line-soft);
   transition: background 0.15s;
   position: relative;
@@ -386,14 +386,10 @@ nav.tabs {
 .memo-item:last-child { border-bottom: none; }
 .memo-item:hover { background: rgba(30, 58, 95, 0.025); }
 
-.memo-item.is-today {
-  background: linear-gradient(90deg, rgba(184, 134, 60, 0.08) 0%, transparent 60%);
-  border-left: 2px solid var(--gold);
-  padding-left: 12px;
+.memo-date-group[data-today] .memo-item {
+  background: linear-gradient(90deg, rgba(184, 134, 60, 0.06) 0%, transparent 70%);
 }
-.memo-item.is-today .memo-date { color: var(--gold); font-weight: 500; }
 
-.memo-item.is-schedule .memo-date { color: var(--accent-bright); font-weight: 500; }
 .memo-item.is-schedule .memo-text { color: var(--accent-bright); }
 
 .memo-date {
@@ -507,6 +503,33 @@ nav.tabs {
 .memo-actions button:hover { color: var(--accent); }
 .memo-actions .memo-del:hover { color: var(--red); }
 
+.memo-date-group { }
+.memo-date-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px 6px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-mute);
+  letter-spacing: 0.05em;
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+  z-index: 1;
+}
+.memo-date-header.is-today {
+  color: var(--accent);
+}
+.memo-date-header .today-badge {
+  display: inline-block;
+  font-size: 9px;
+  background: var(--accent);
+  color: white;
+  padding: 1px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+}
 .memo-feed-empty {
   text-align: center;
   padding: 40px 20px;
@@ -1561,7 +1584,7 @@ nav.tabs {
           <input type="date" id="f-date">
         </div>
 
-        <div class="form-row">
+        <div class="form-row" id="form-row-cat">
           <label>카테고리</label>
           <div class="cat-select-grid" id="cat-select-grid">
             <button type="button" class="cat-btn active" data-cat="식비">식비</button>
@@ -1581,7 +1604,7 @@ nav.tabs {
 
         <div class="form-row">
           <label>금액</label>
-          <input type="number" id="f-amount" placeholder="0">
+          <input type="text" inputmode="numeric" id="f-amount" placeholder="0" autocomplete="off">
         </div>
 
         <button class="form-submit" id="f-submit">입력</button>
@@ -1771,11 +1794,20 @@ function getAllMemos() {
 
 function renderMemoFeed() {
   const feed = document.getElementById('memo-feed');
+  const todayKey = ymd(new Date());
   let all = getAllMemos();
 
-  // 필터 적용
+  // 타입 필터 적용
   if (state.memoFilter !== 'all') {
     all = all.filter(m => m.type === state.memoFilter);
+  } else {
+    // 전체 보기: 과거 날짜는 미완료 할일만 표시
+    all = all.filter(m => {
+      if (m.date < todayKey) {
+        return m.type === 'todo' && !m.checked && !m.skipped;
+      }
+      return true;
+    });
   }
 
   if (all.length === 0) {
@@ -1783,19 +1815,22 @@ function renderMemoFeed() {
     return;
   }
 
-  const shown = all.slice(0, MEMO_FEED_LIMIT);
-  feed.innerHTML = shown.map(m => {
-    const [y, mo, d] = m.date.split('-').map(Number);
-    const dateObj = new Date(y, mo - 1, d);
-    const dow = WEEKDAY_KR[dateObj.getDay()];
-    const dateLabel = `${mo}.${pad(d)}`;
+  // 날짜별 그룹화
+  const groups = {};
+  all.forEach(m => {
+    if (!groups[m.date]) groups[m.date] = [];
+    groups[m.date].push(m);
+  });
 
+  // 날짜 내림차순 정렬
+  const sortedDates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+  const renderItem = (m) => {
     let typeClass = '';
-    if (m.isToday) typeClass += ' is-today';
+    if (m.date === todayKey) typeClass += ' is-today';
     if (m.type === 'schedule') typeClass += ' is-schedule';
     if (m.type === 'todo') typeClass += ' is-todo';
 
-    // 할일: 두 칸 체크박스
     const checkboxHtml = m.type === 'todo'
       ? `<div class="todo-checks">
            <span class="memo-checkbox done-box ${m.checked ? 'checked' : ''}" data-role="memo-check" title="완료">✓</span>
@@ -1809,10 +1844,6 @@ function renderMemoFeed() {
 
     return `
       <div class="memo-item${typeClass}" data-date="${m.date}" data-idx="${m.idx}">
-        <div class="memo-date">
-          ${dateLabel}
-          <span class="memo-dow">${dow}</span>
-        </div>
         <div class="memo-text-wrap">
           ${checkboxHtml}
           <span class="${textClass}" data-role="memo-text">${escapeHtml(m.text)}</span>
@@ -1823,8 +1854,30 @@ function renderMemoFeed() {
         </div>
       </div>
     `;
+  };
+
+  feed.innerHTML = sortedDates.map(dateKey => {
+    const [y, mo, d] = dateKey.split('-').map(Number);
+    const dateObj = new Date(y, mo - 1, d);
+    const dow = WEEKDAY_KR[dateObj.getDay()];
+    const isToday = dateKey === todayKey;
+    const todayAttr = isToday ? ' data-today="1"' : '';
+    const todayHeaderClass = isToday ? ' is-today' : '';
+    const todayBadge = isToday ? ' <span class="today-badge">오늘</span>' : '';
+
+    return `<div class="memo-date-group"${todayAttr}>
+      <div class="memo-date-header${todayHeaderClass}">${mo}.${pad(d)} ${dow}${todayBadge}</div>
+      ${groups[dateKey].map(renderItem).join('')}
+    </div>`;
   }).join('');
 
+  // 오늘 그룹이 있으면 피드 중앙으로 스크롤
+  setTimeout(() => {
+    const anchor = feed.querySelector('[data-today]');
+    if (anchor) {
+      feed.scrollTop = Math.max(0, anchor.offsetTop - feed.clientHeight / 2 + anchor.offsetHeight / 2);
+    }
+  }, 0);
 }
 
 function renderHome() {
@@ -2364,7 +2417,14 @@ document.querySelectorAll('.type-toggle button').forEach(btn => {
     document.querySelectorAll('.type-toggle button').forEach(b => b.classList.remove('active', 'expense', 'income'));
     btn.classList.add('active', btn.dataset.type);
     state.formType = btn.dataset.type;
+    document.getElementById('form-row-cat').style.display = state.formType === 'income' ? 'none' : '';
   });
+});
+
+// 금액 입력 콤마 자동 포맷
+document.getElementById('f-amount').addEventListener('input', function() {
+  const raw = this.value.replace(/[^0-9]/g, '');
+  this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
 });
 
 document.querySelectorAll('#cat-select-grid .cat-btn').forEach(btn => {
@@ -2386,7 +2446,7 @@ document.querySelectorAll('#led-filter button').forEach(btn => {
 
 document.getElementById('f-submit').addEventListener('click', () => {
   const date = document.getElementById('f-date').value;
-  const amount = parseFloat(document.getElementById('f-amount').value);
+  const amount = parseFloat(document.getElementById('f-amount').value.replace(/,/g, ''));
   const content = document.getElementById('f-content').value.trim();
 
   if (!date) { toast('날짜를 선택하세요'); return; }
